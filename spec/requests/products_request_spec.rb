@@ -21,4 +21,26 @@ RSpec.describe :Products, type: :request do
             end
         end
     end
+
+    describe "#update" do
+        context "when valid props" do
+            it "updates the item" do
+                fresh_prod = create(:product)
+                new_description = "This is a new description"
+                params = { description: new_description }
+
+                put "/api/v1/products/#{fresh_prod.id}", params: { product: params }
+                json = JSON.parse(response.body)
+                expect(json['description']).to eq new_description
+            end
+        end
+    end
+
+    describe "#destroy" do
+        it "returns 200" do
+            product = create(:product)
+            delete "/api/v1/products/#{product.id}"
+            expect(response).to have_http_status(200)
+        end
+    end
 end
