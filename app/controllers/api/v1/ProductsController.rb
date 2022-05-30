@@ -1,4 +1,11 @@
 class Api::V1::ProductsController < ApplicationController
+    skip_before_action :check_admin, only: [:index]
+
+    def index
+        @products = Product.all
+      render json: @products, status: :ok    
+    end
+
     def create
         @product = Product.new(product_params)
 
@@ -28,5 +35,11 @@ class Api::V1::ProductsController < ApplicationController
 
     def product_params
         params.require(:product).permit(:category, :price, :description)
+    end
+
+    def check_admin
+        if !current_user.admin?
+            render status: :unprocessable_entity
+        end
     end
 end
