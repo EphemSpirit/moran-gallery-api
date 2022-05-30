@@ -22,13 +22,16 @@ class Api::V1::ReviewsController < ApplicationController
     end
 
     def destroy
-        if !current_user_or_admin?
-            render json: { status: :unprocessable_entity }
-        end
-
         @review = Review.find(params[:id])
-        @review.destroy
-        render head :no_content
+
+        if current_api_v1_user.admin? || @review.user_id != current_api_v1_user.id
+            render json: { status: :unprocessable_entity }
+        else
+            @review.destroy
+            render status: :ok
+        end
+    
+
     end
 
     private
@@ -37,7 +40,7 @@ class Api::V1::ReviewsController < ApplicationController
         params.require(:review).permit(:star_count, :content, :user_id, :product_id)
     end
 
-    def current_user_or_admin?
-        current_api_v1_user == @review.user || current_user.admin?
-    end
+    # def current_user_or_admin?
+    #     current_api_v1_user == @review.user || current_user.admin?
+    # end
 end

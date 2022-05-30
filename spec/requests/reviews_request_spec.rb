@@ -10,6 +10,7 @@ RSpec.describe "Reviews", type: :request do
             expect(json.length).to eq 4
         end
     end
+
     describe "#create" do
         context "when admin" do
             it "doesn't let you post a review" do
@@ -48,6 +49,20 @@ RSpec.describe "Reviews", type: :request do
                 json = JSON.parse(response.body)
                 expect(response).to have_http_status(200)
                 expect(json['message']).to eq 'Review posted!'
+            end
+        end
+    end
+
+    describe "#destroy" do
+        context "when not admin" do
+            it "deletes the review" do
+                review = create(:review)
+                user = create(:user, :customer)
+                product = create(:product)
+                sign_in user
+
+                delete "/api/v1/products/#{product.id}/reviews/#{review.id}"
+                expect(response).to have_http_status(200)
             end
         end
     end
