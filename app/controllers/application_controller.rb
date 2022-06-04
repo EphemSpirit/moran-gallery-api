@@ -2,8 +2,8 @@ class ApplicationController < ActionController::API
     before_action :check_admin
 
     def check_admin
-        if !current_user.admin?
-            render status: :unprcoessable_entity
+        if !current_api_v1_user.admin?
+            render status: :unprocessable_entity
         end
     end
 end

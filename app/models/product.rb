@@ -4,4 +4,6 @@ class Product < ApplicationRecord
     scope :jewelry, -> { where("category = ?", "jewelry") }
     scope :embroidery, -> { where("category = ?", "embroidery") }
     scope :portraiture, -> { where("category = ?", "portraiture") }
+
+    has_many :reviews
 end

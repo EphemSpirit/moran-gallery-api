@@ -9,5 +9,7 @@ class User < ApplicationRecord
    customer: 1
   }
 
-  
+  has_many :reviews
+
+
 end
