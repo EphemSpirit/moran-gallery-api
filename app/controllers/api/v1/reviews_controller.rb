@@ -1,5 +1,6 @@
 class Api::V1::ReviewsController < ApplicationController
     skip_before_action :check_admin
+    before_action :authenticate_api_v1_user!, except: [:index]
 
     def index
         @reviews = Review.all
@@ -25,7 +26,7 @@ class Api::V1::ReviewsController < ApplicationController
         @review = Review.find(params[:id])
 
         if current_api_v1_user.admin? || @review.user_id != current_api_v1_user.id
-            render json: { status: :unprocessable_entity }
+            render status: :unprocessable_entity
         else
             @review.destroy
             render status: :ok

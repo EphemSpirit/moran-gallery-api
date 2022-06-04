@@ -1,5 +1,6 @@
 class Api::V1::ProductsController < ApplicationController
     skip_before_action :check_admin, only: [:index]
+    before_action :authenticate_api_v1_user!, except: [:index]
 
     def index
         @products = Product.all

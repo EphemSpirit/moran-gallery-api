@@ -4,4 +4,5 @@ class Review < ApplicationRecord
     has_many_attached :user_image
 
     validates :content, :star_count, presence: true
+    validates :star_count, numericality: { only_integer: true }
 end

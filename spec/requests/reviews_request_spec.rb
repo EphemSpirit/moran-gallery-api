@@ -56,13 +56,30 @@ RSpec.describe "Reviews", type: :request do
     describe "#destroy" do
         context "when not admin" do
             it "deletes the review" do
-                review = create(:review)
                 user = create(:user, :customer)
+                product = create(:product)
+                sign_in user
+                review = Review.create(
+                    star_count: 3,
+                    content: "This is a test",
+                    user_id: user.id,
+                    product_id: product.id
+                )
+
+                delete "/api/v1/products/#{product.id}/reviews/#{review.id}"
+                expect(response).to have_http_status(200)
+            end
+        end
+
+        context "when admin" do
+            it "does not delete the review" do
+                review = create(:review)
+                user = create(:user, :admin)
                 product = create(:product)
                 sign_in user
 
                 delete "/api/v1/products/#{product.id}/reviews/#{review.id}"
-                expect(response).to have_http_status(200)
+                expect(response).to have_http_status(422)
             end
         end
     end
