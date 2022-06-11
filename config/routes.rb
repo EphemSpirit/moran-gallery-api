@@ -7,6 +7,7 @@ Rails.application.routes.draw do
         resources :reviews, only: [:create, :destroy]
       end
       resources :reviews, only: [:index]
+      resources :blogs, only: [:index, :create, :update, :destroy]
       devise_for :users, controllers: { sessions: 'users/sessions' }
     end
   end
