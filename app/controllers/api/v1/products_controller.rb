@@ -32,6 +32,16 @@ class Api::V1::ProductsController < ApplicationController
         render json: { status: :success, message: "Product deleted!" }
     end
 
+    def add_to_cart
+        # turn the prodyct into a cart item
+        # if there is a logged in user, pass it the current user's cart
+        # else, create a new cart that has no user id (for "Continue as guest" or whatever)
+        cart = current_api_v1_user ? current_api_v1_user.cart : Cart.create
+        @product = Product.find(params[:id])
+        cart_item = CartItem.create(product_id: @product.id, cart_id: current_api_v1_user.cart.id)
+        cart.cart_items.include?()
+    end
+
     private
 
     def product_params
