@@ -13,7 +13,7 @@ class User < ApplicationRecord
   has_many :blogs
   has_one :cart
 
-  after_create :create_user_cart
+  # after_create :create_user_cart
 
   def create_user_cart
     cart = self.cart.create(user_id: self.id)
