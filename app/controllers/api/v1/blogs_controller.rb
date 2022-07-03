@@ -7,7 +7,7 @@ class Api::V1::BlogsController < ApplicationController
     end
 
     def create
-        @blog = current_api_v1_user.blogs.build(blog_params)
+        @blog = current_user.blogs.build(blog_params)
         if @blog.save
             render json: @blog, status: :ok, message: "Blog posted!"
         else

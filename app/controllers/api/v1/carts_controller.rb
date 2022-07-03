@@ -5,6 +5,17 @@ class Api::V1::CartsController < ApplicationController
         @cart = Cart.find(params[:id])
         render json: @cart, status: :ok
     end
+    
+    def create
+        puts "CREATING CART THING"
+        @cart = current_user.cart.build(cart_params)
+
+        if @cart.save(cart_params)
+            render json: @cart, status: :success
+        else
+            render json: @cart.error, status: :unprocessable_entity
+        end
+    end
 
     def destroy
         @cart = Cart.find(params[:id])

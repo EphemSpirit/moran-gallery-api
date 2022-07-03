@@ -5,6 +5,7 @@ class Cart < ApplicationRecord
     accepts_nested_attributes_for :shipments
 
     def add_item(product)
+        puts "ADDING ITEM"
         current_item = cart_items.find_by(product_id: product.id)
         if current_item
             current_item.increment(:quantity)

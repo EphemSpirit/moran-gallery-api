@@ -3,7 +3,7 @@ class ApplicationController < ActionController::API
     include CurrentCart
 
     def check_admin
-        if !current_api_v1_user.admin?
+        if current_user && !current_user.admin?
             render status: :unprocessable_entity
         end
     end

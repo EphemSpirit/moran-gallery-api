@@ -8,6 +8,7 @@ class Api::V1::ProductsController < ApplicationController
     end
 
     def create
+        puts "CREATING"
         @product = Product.new(product_params)
 
         if @product.save
@@ -36,9 +37,9 @@ class Api::V1::ProductsController < ApplicationController
         # turn the prodyct into a cart item
         # if there is a logged in user, pass it the current user's cart
         # else, create a new cart that has no user id (for "Continue as guest" or whatever)
-        cart = current_api_v1_user ? current_api_v1_user.cart : Cart.create
+        cart = current_user ? current_user.cart : Cart.create
         @product = Product.find(params[:id])
-        cart_item = CartItem.create(product_id: @product.id, cart_id: current_api_v1_user.cart.id)
+        cart_item = CartItem.create(product_id: @product.id, cart_id: current_user.cart.id)
         cart.cart_items.include?()
     end
 
@@ -49,7 +50,7 @@ class Api::V1::ProductsController < ApplicationController
     end
 
     def check_admin
-        if !current_api_v1_user&.admin?
+        if !current_user&.admin?
             render status: :unprocessable_entity
         end
     end

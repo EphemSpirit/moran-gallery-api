@@ -1,15 +1,17 @@
 class Api::V1::CartItemsController < ApplicationController
   include CurrentCart
 
-  # before_action :set_cart, only: [:create]
+  before_action :set_cart, only: [:create]
 
   def create
-      @cart = current_api_v1_user.cart
-      product = Product.find(params[:product_id])
-      @cart_item = @cart.add_item(cart_item_params)
+      # byebug
+      product = Product.find(params[:cart_item][:product_id])
+      @cart_item = @cart.add_item(product)
+
+      # binding.pry
 
       if @cart_item.save
-        render json: @cart_item, status: :success, message: "Item Added to Cart"
+        render json: @cart_item, status: :ok, message: "Item Added to Cart"
       else
         render json: @cart_item.errors, status: :unprocessable_entity, message: "Something went wrong, please try again"
       end
@@ -24,6 +26,6 @@ class Api::V1::CartItemsController < ApplicationController
   private
 
   def cart_item_params
-      params.require(:cart_item).permit(:product_id, :cart_id)
+      params.require(:cart_item).permit(:product_id)
   end
 end

@@ -8,8 +8,8 @@ class Api::V1::ReviewsController < ApplicationController
     end
 
     def create
-        if !current_api_v1_user.admin?
-          @review = current_api_v1_user.reviews.build(review_params)
+        if !current_user.admin?
+          @review = current_user.reviews.build(review_params)
   
           if @review.save
               render json: { status: :ok, message: "Review posted!" }
@@ -25,7 +25,7 @@ class Api::V1::ReviewsController < ApplicationController
     def destroy
         @review = Review.find(params[:id])
 
-        if current_api_v1_user.admin? || @review.user_id != current_api_v1_user.id
+        if current_user.admin? || @review.user_id != current_user.id
             render status: :unprocessable_entity
         else
             @review.destroy
@@ -42,6 +42,6 @@ class Api::V1::ReviewsController < ApplicationController
     end
 
     # def current_user_or_admin?
-    #     current_api_v1_user == @review.user || current_user.admin?
+    #     current_user == @review.user || current_user.admin?
     # end
 end
