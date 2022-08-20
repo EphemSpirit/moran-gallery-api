@@ -12,4 +12,8 @@ FactoryBot.define do
   trait :admin do
     role { 0 }
   end
+
+  trait :with_cart do
+    cart { create(:cart) }
+  end
 end

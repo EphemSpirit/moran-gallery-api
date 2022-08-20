@@ -6,4 +6,5 @@ class Product < ApplicationRecord
     scope :portraiture, -> { where("category = ?", "portraiture") }
 
     has_many :reviews
+    has_many :cart_items
 end
