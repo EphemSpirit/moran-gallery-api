@@ -8,9 +8,19 @@ class Cart < ApplicationRecord
         puts "ADDING ITEM"
         current_item = cart_items.find_by(product_id: product.id)
         if current_item
-            current_item.increment(:quantity)
+            current_item.increment!(:quantity)
         else
             current_item = cart_items.build(product_id: product.id)
+        end
+        current_item
+    end
+
+    def remove_item(product)
+        current_item = cart_items.find_by(product_id: product.id)
+        if current_item.quantity > 1
+            current_item.decrement!(:quantity)
+        else
+            current_item.destroy
         end
         current_item
     end

@@ -18,9 +18,10 @@ class Api::V1::CartItemsController < ApplicationController
   end
 
   def destroy
-      @cart = Cart.find(session[:cart_id])
-      @cart_item.destroy
-      render json: { status: :success, message: "Item removed" }
+    @product = Product.find(parms[:cart_item][:product_id])
+    @cart_item = @cart.remove_item(@product)
+
+    @cart_item.destroy
   end
 
   private

@@ -7,7 +7,6 @@ class Api::V1::CartsController < ApplicationController
     end
     
     def create
-        puts "CREATING CART THING"
         @cart = current_user.cart.build(cart_params)
 
         if @cart.save(cart_params)
